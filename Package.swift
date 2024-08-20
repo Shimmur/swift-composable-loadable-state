@@ -5,20 +5,62 @@ import PackageDescription
 
 let package = Package(
     name: "swift-composable-loadable-state",
+    platforms: [
+      .iOS(.v15)
+    ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "swift-composable-loadable-state",
-            targets: ["swift-composable-loadable-state"]),
+            name: "Loadable",
+            targets: ["Loadable"]
+        ),
+        .library(
+            name: "LoadableUI",
+            targets: ["LoadableUI"]
+        ),
+        .library(
+            name: "PaginatedList",
+            targets: ["PaginatedList"]
+        ),
+    ],
+    dependencies: [
+        .package(
+            url: "https://github.com/pointfreeco/swift-case-paths",
+            .upToNextMajor(from: "1.5.4")
+        ),
+        .package(
+            url: "https://github.com/pointfreeco/swift-composable-architecture",
+            .upToNextMajor(from: "1.13.0")
+        ),
+        .package(
+            url: "https://github.com/pointfreeco/swift-identified-collections",
+            .upToNextMajor(from: "1.0.0")
+        ),
+        .package(
+            url: "https://github.com/pointfreeco/swift-custom-dump",
+            .upToNextMajor(from: "1.3.3")
+        )
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "swift-composable-loadable-state"),
+            name: "Loadable",
+            dependencies: [
+                .product(name: "CasePaths", package: "swift-case-paths"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                .product(name: "CustomDump", package: "swift-custom-dump"),
+                .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
+            ]
+        ),
+        .target(
+            name: "LoadableUI",
+            dependencies: ["Loadable"]
+        ),
+        .target(
+            name: "PaginatedList",
+            dependencies: ["Loadable", "LoadableUI"]
+        ),
         .testTarget(
-            name: "swift-composable-loadable-stateTests",
-            dependencies: ["swift-composable-loadable-state"]
+            name: "LoadableTests",
+            dependencies: ["Loadable"]
         ),
     ]
 )
