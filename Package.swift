@@ -39,6 +39,10 @@ let package = Package(
         .package(
             url: "https://github.com/pointfreeco/swift-custom-dump",
             .upToNextMajor(from: "1.3.3")
+        ),
+        .package(
+            url: "https://github.com/pointfreeco/xctest-dynamic-overlay",
+            .upToNextMajor(from: "1.4.1")
         )
     ],
     targets: [
@@ -61,7 +65,10 @@ let package = Package(
         ),
         .testTarget(
             name: "LoadableTests",
-            dependencies: ["Loadable"]
+            dependencies: [
+                "Loadable",
+                .product(name: "IssueReportingTestSupport", package: "xctest-dynamic-overlay")
+            ]
         ),
     ]
 )
