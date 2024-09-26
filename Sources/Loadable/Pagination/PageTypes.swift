@@ -38,3 +38,17 @@ public struct TimestampedPage: Equatable, Hashable, Sendable {
         self.size = size
     }
 }
+
+/// Describes a page of data that can be fetched by specifying a limit and record offset.
+public struct OffsetPage: Equatable, Hashable, Sendable {
+    /// The maximum number of records to fetch.
+    public let limit: Int
+
+    /// The offset from the first record in the collection.
+    public let offset: Int
+
+    public init(limit: Int, offset: Int) {
+        self.limit = limit
+        self.offset = offset
+    }
+}

@@ -15,6 +15,7 @@ struct LoadableExamples {
     @Reducer(state: .equatable)
     enum Path {
         case loadOnDemand(LoadOnDemand)
+        case paginatedList(PaginatedListExample)
     }
     
     var body: some ReducerOf<Self> {

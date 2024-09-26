@@ -3,7 +3,7 @@
 /// Paginated data represents a subset of the data available and defines the current page,
 /// the values contained within that page and the next page, if there is one.
 ///
-/// For most needs, you can use the built-in `PaginatedArray` which conforms to this
+/// For most needs, you can use the built-in `PaginatedArraySlice` which conforms to this
 /// protocol - if you need to model a more complicated response you can implement your
 /// own paginated data type and conform to this protocol directly.
 ///

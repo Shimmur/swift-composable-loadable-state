@@ -24,6 +24,14 @@ public struct PaginatedListReducer<Value: Equatable & Identifiable & Sendable, P
         self.firstPage = NumberedPage(number: 1, size: pageSize)
         self.loadPage = loadPage
     }
+    
+    public init(
+        limit: Int,
+        loadPage: @escaping @Sendable (PageType, State) async throws -> CollectionType.PageData
+    ) where PageType == OffsetPage {
+        self.firstPage = OffsetPage(limit: limit, offset: 0)
+        self.loadPage = loadPage
+    }
 
     @ObservableState
     public struct State: Equatable, Sendable {

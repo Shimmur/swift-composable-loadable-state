@@ -24,6 +24,8 @@ struct LoadableExamplesApp: App {
                 switch destination.case {
                 case let .loadOnDemand(store):
                     LoadOnDemandView(store: store)
+                case let .paginatedList(store):
+                    PaginatedListExampleView(store: store)
                 }
             }
         }
@@ -34,7 +36,10 @@ struct LoadableExamplesApp: App {
             List {
                 Section("Examples") {
                     NavigationLink(state: LoadableExamples.Path.State.loadOnDemand(.init())) {
-                        Text("Load on demand")
+                        Text("Load On Demand")
+                    }
+                    NavigationLink(state: LoadableExamples.Path.State.paginatedList(.init())) {
+                        Text("Paginated List")
                     }
                 }
             }
