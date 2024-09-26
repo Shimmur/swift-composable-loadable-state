@@ -48,10 +48,7 @@ let package = Package(
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 .product(name: "CustomDump", package: "swift-custom-dump"),
                 .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
-            ],
-            swiftSettings: [
-                .enableUpcomingFeature("InferSendableFromCaptures")
-            ],
+            ]
         ),
         .target(
             name: "LoadableUI",
