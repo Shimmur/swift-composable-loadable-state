@@ -13,31 +13,29 @@ extension LoadableAction: Sendable where Value: Sendable {}
 
 // MARK: - Reducer
 
-public struct LoadableTaskCancellationId<Root>: Hashable {
-    let keyPath: PartialKeyPath<Root>
-}
-
-fileprivate extension LoadableState {
-    /// Cancels any in-flight load operation and resets the loadable state to its previous state.
-    mutating func cancelLoadOperation<ParentState, ParentAction>(id: KeyPath<ParentState, Self>) -> Effect<ParentAction> {
-        if let currentValue {
-            self = .loaded(currentValue, isStale: false)
-        } else {
-            self = .notLoaded
-        }
-        return .cancel(id: LoadableTaskCancellationId(keyPath: id))
+public struct LoadableTaskCancellationId<Root: Sendable>: Hashable, Sendable {
+    private let keyPath: UncheckedSendable<PartialKeyPath<Root>>
+    
+    init(keyPath: PartialKeyPath<Root>) {
+        self.keyPath = .init(keyPath)
     }
 }
 
 extension Effect {
-    static func cancelLoadTask<ParentState, ParentAction, Value>(
-        for keyPath: WritableKeyPath<ParentState, LoadableState<Value>>,
-        on state: inout ParentState
-    ) -> Effect<ParentAction> {
+    /// Cancels any in-flight load task and resets the loadable state to its previous state.
+    static func cancelLoadTask<State: Sendable, Value>(
+        for keyPath: WritableKeyPath<State, LoadableState<Value>>,
+        on state: inout State
+    ) -> Self {
         var loadableState = state[keyPath: keyPath]
-        let effect: Effect<ParentAction> = loadableState.cancelLoadOperation(id: keyPath)
+        // If we are reloading, then revert back to a loaded state.
+        if let value = loadableState.currentValue {
+            loadableState = .loaded(value, isStale: false)
+        } else {
+            loadableState = .notLoaded
+        }
         state[keyPath: keyPath] = loadableState
-        return effect
+        return .cancel(id: LoadableTaskCancellationId(keyPath: keyPath))
     }
 }
 

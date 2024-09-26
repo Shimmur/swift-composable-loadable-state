@@ -29,9 +29,22 @@
 		B2B96C512C74EA2200EC4EDA /* LoadableExamplesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoadableExamplesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B221F4812CA5A022009488B1 /* Exceptions for "LoadableExamples" folder in "LoadableExamples" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B2B96C402C74EA2100EC4EDA /* LoadableExamples */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B2B96C432C74EA2100EC4EDA /* LoadableExamples */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B221F4812CA5A022009488B1 /* Exceptions for "LoadableExamples" folder in "LoadableExamples" target */,
+			);
 			path = LoadableExamples;
 			sourceTree = "<group>";
 		};
@@ -281,6 +294,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_INFER_SENDABLE_FROM_CAPTURES = YES;
 			};
 			name = Debug;
 		};
@@ -336,6 +350,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_UPCOMING_FEATURE_INFER_SENDABLE_FROM_CAPTURES = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -350,6 +365,7 @@
 				DEVELOPMENT_TEAM = 2SHNRBFMKJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LoadableExamples/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -378,6 +394,7 @@
 				DEVELOPMENT_TEAM = 2SHNRBFMKJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LoadableExamples/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

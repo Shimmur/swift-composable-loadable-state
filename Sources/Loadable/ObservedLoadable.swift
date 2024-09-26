@@ -54,7 +54,7 @@ public struct ObservedLoadable<Value: Sendable>: Observable, Perceptible {
         state = initialState
     }
 
-    private let _$perceptionRegistrar = Perception.PerceptionRegistrar()
+    private let _$perceptionRegistrar = Perception.PerceptionRegistrar(isPerceptionCheckingEnabled: _isLoadablePerceptionCheckingEnabled)
 
     internal nonisolated func access<Member>(
         keyPath: KeyPath<Self, Member>,
@@ -94,3 +94,11 @@ extension ObservedLoadable: CustomReflectable {
 extension ObservedLoadable: Equatable where Value: Equatable {}
 extension ObservedLoadable: Hashable where Value: Hashable {}
 extension ObservedLoadable: Sendable where Value: Sendable {}
+
+let _isLoadablePerceptionCheckingEnabled: Bool = {
+  if #available(iOS 17, macOS 14, tvOS 17, watchOS 10, *) {
+    return false
+  } else {
+    return true
+  }
+}()
