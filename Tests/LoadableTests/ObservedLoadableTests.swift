@@ -1,7 +1,6 @@
 import ComposableArchitecture
 import OrderedCollections
 import Foundation
-import TestUtilities
 import XCTest
 
 @testable import Loadable
