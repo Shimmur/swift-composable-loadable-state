@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "swift-composable-loadable-state",
     platforms: [
-      .iOS(.v15)
+      .iOS(.v15),
+      .macOS(.v14)
     ],
     products: [
         .library(
