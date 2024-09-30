@@ -10,7 +10,6 @@ struct PaginatedListExample {
     
     @ObservableState
     struct State: Equatable {
-        @ObservationStateIgnored
         var genreList = GenresList.State()
     }
     

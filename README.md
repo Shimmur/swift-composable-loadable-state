@@ -3,7 +3,7 @@
 This library provides a convenient way for managing data that has to be loaded at runtime, 
 for example from disk or from a HTTP API. It also has support for loading paginated data.
 
-## The Basics
+## The Basics
 
 The core functionality of this library is provided by a property wrapper - `@Loadable` -
 and a high-order reducer that manages how and when that data should be loaded.
@@ -25,6 +25,21 @@ struct Feature {
   }
 }
 ```
+
+> [!IMPORTANT]
+> If you're using Swift Observation tools and the `@ObservableState` macro, you will
+> need to use the observable equivalent - `@ObservedLoadable`. This needs to be marked
+> with `@ObservationStateIgnored` in order to work correctly - it will maintain its own
+> internal observation registrar to track changes:
+> 
+> ```swift
+> @Reducer
+> struct Feature {
+>   struct State: Equatable {
+>     @ObservationStateIgnored @ObservedLoadable var profile: UserProfile?
+>   }
+> }
+> ```
 
 To configure how this data is loaded you use the `.loadable` higher-order reducer. First,
 add a new action to your feature - this should wrap a `LoadableAction<T>` which is generic 
@@ -113,7 +128,7 @@ This library has been designed to be state-driven as much as possible. A loadabl
 starts off in a `.notLoaded(readyToLoad: false)`. The `readyToLoad` parameter is used 
 to indicate to the loadable system that a value should be loaded. In the first example
 above, calling `$state.readyToLoad()` transitions to a `.notLoaded(readyToLoad: true)` 
-state - this is detected by the `.loadable` reducer a load operation is performed.
+state - when this is detected by the `.loadable` reducer a load operation is performed.
 
 Before the load operation begins, the state transitions to a `.loading(T?)` state. The 
 optional `T?` represents an existing loaded value. When loading for the first time this 
@@ -163,7 +178,7 @@ transitions.
 ## Reloading
 
 It is possible to handle data reloading without having to manually perform a state transition. 
-The loadable reducer's' `performsLoadOn:` parameter will automatically handle the case where 
+The loadable reducer's `performsLoadOn:` parameter will automatically handle the case where 
 a value is already loaded and transition to a `.loading(.some(existingValue))` state, 
 preserving the existing value. This is useful where you want the existing data to remain 
 visible in the UI, e.g. when handling pull to refresh:
@@ -376,3 +391,96 @@ struct WidgetsFeature {
   }
 }
 ```
+
+### PaginatedList
+
+This package contains an additional library that is designed to make building 
+lazily loaded paginated lists in SwiftUI and TCA even easier. This builds on 
+top of the lower-level pagination and loadable APIs outlined above.
+
+#### Reducer Integration
+
+The library provides a built-in reducer type, `PaginatedListReducer` which 
+encapsulates all of the logic required to display and load a paginated list of 
+data and supports lazy pagination and pull-to-refresh.
+
+To integrate it into your existing feature, start by adding a state property 
+and action case to wrap the reducer's state and action. The reducer is generic 
+over the individual values being loaded and the type of page:
+
+```swift
+import PaginatedList
+
+struct GenresListFeature {
+    public typealias GenresList = PaginatedListReducer<Genre, OffsetPage>
+
+    @ObservableState
+    struct State: Equatable {
+        var genreList = GenresList.State()
+    }
+    
+    enum Action {
+        case genreList(GenresList.Action)
+    }
+}
+```
+
+Next, scope down to the state/action added above and integrate the reducer - the 
+reducer's initializer requires either a page size (for numbered pages) or limit 
+(for offset pages) and takes an async throwing closure that should perform the 
+page load operation:
+
+```swift
+var body: some ReducerOf<Self> {
+    Scope(state: \.genreList, action: \.genreList) {
+        PaginatedListReducer(limit: 50) { page, _ in
+            return try await client.fetchGenres(page: page)
+        }
+    }
+}
+```
+
+#### View Integration
+
+You can construct your list of data by wrapping a `List` view with a 
+`PaginatedListStore` view - this view requires a store scoped to the paginated 
+list reducer state and action and takes a view builder closure that can be 
+used to construct the list. A collection of values will be provided which can 
+be iterated over using a `ForEach` view.
+
+This view is responsible for:
+
+* Creating your list or other custom container view for displaying the data.
+* Iterating over the provided collection of data and displaying it.
+* If automatic pagination is required, appending the built-in `LoadNextPageView` after iterating over the collection.
+* Applying any list formatting required.
+
+The `PaginatedListStore` view will take care of setting up the SwiftUI environment 
+so that the `LoadNextPageView` will send the correct action to the store to trigger 
+the load of the next page (if there is one) and pull-to-refresh.
+
+```swift
+struct GeneresListView: View {
+    let store: StoreOf<GenresListFeature>
+    
+    var body: some View {
+        PaginatedListStore(store: store.scope(state: \.genreList, action: \.genreList)) { genres in
+            List {
+                ForEach(genres.values) { genre in
+                    Text(genre.name)
+                }
+                LoadNextPageView(nextPage: genres.nextPage)
+            }
+            .listStyle(.plain)
+        }
+        .navigationTitle("Genres")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+```
+
+
+
+
+
+
