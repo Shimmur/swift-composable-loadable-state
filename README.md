@@ -406,7 +406,7 @@ data and supports lazy pagination and pull-to-refresh.
 
 To integrate it into your existing feature, start by adding a state property 
 and action case to wrap the reducer's state and action. The reducer is generic 
-over the data being individual values being loaded and the type of page:
+over the individual values being loaded and the type of page:
 
 ```swift
 import PaginatedList
