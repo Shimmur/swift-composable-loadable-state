@@ -26,7 +26,7 @@ struct Feature {
 }
 ```
 
-> [!TIP]
+> [!IMPORTANT]
 > If you're using Swift Observation tools and the `@ObservableState` macro, you will
 > need to use the observable equivalent of `@ObservedLoadable`. This needs to be marked
 > with `@ObservationStateIgnored` in order to work correctly - it will maintain its own
