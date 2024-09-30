@@ -28,7 +28,7 @@ struct Feature {
 
 > [!IMPORTANT]
 > If you're using Swift Observation tools and the `@ObservableState` macro, you will
-> need to use the observable equivalent of `@ObservedLoadable`. This needs to be marked
+> need to use the observable equivalent - `@ObservedLoadable`. This needs to be marked
 > with `@ObservationStateIgnored` in order to work correctly - it will maintain its own
 > internal observation registrar to track changes:
 > 
@@ -39,7 +39,7 @@ struct Feature {
 >     @ObservationStateIgnored @ObservedLoadable var profile: UserProfile?
 >   }
 > }
-```
+> ```
 
 To configure how this data is loaded you use the `.loadable` higher-order reducer. First,
 add a new action to your feature - this should wrap a `LoadableAction<T>` which is generic 
