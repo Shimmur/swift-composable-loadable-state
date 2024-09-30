@@ -3,7 +3,7 @@
 This library provides a convenient way for managing data that has to be loaded at runtime, 
 for example from disk or from a HTTP API. It also has support for loading paginated data.
 
-## The Basics
+## The Basics
 
 The core functionality of this library is provided by a property wrapper - `@Loadable` -
 and a high-order reducer that manages how and when that data should be loaded.
@@ -24,6 +24,21 @@ struct Feature {
     @Loadable var profile: UserProfile?
   }
 }
+```
+
+> [!TIP]
+> If you're using Swift Observation tools and the `@ObservableState` macro, you will
+> need to use the observable equivalent of `@ObservedLoadable`. This needs to be marked
+> with `@ObservationStateIgnored` in order to work correctly - it will maintain its own
+> internal observation registrar to track changes:
+> 
+> ```swift
+> @Reducer
+> struct Feature {
+>   struct State: Equatable {
+>     @ObservationStateIgnored @ObservedLoadable var profile: UserProfile?
+>   }
+> }
 ```
 
 To configure how this data is loaded you use the `.loadable` higher-order reducer. First,
