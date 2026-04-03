@@ -15,7 +15,8 @@ struct LoadableTCA2Tests {
         let loadOnMount: Bool
         
         struct State {
-            @ValueObservationIgnored @Loadable
+            @ValueObservationIgnored
+            @Loadable
             var fact: String? = nil
         }
         
@@ -26,6 +27,7 @@ struct LoadableTCA2Tests {
         
         var body: some Feature {
             Load(\.$fact, loadOnMount: loadOnMount) { _ in
+                
                 await factLoader.load()
             }
             Update { state, action in
