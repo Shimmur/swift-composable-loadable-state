@@ -23,7 +23,7 @@ struct LoadableTCA2Tests {
         }
         
         var body: some Feature {
-            Load(\.$fact) { _ in
+            Load(\.$fact, loadOnMount: autoload) { _ in
                 await factLoader.load()
             }
             Update { state, action in
@@ -36,12 +36,24 @@ struct LoadableTCA2Tests {
     }
     
     @MainActor
+    @Test func `load on mount`() {
+        let factLoader = FactLoader(load: { "this is a random fact" })
+        let store = TestStore(initialState: DemoFeature.State()) {
+            DemoFeature(factLoader: factLoader, autoload: true)
+        } changes: { state in
+            state.fact = "this is a random fact"
+        }
+    }
+    
+    @MainActor
     @Test func `load on action`() {
         let factLoader = FactLoader(load: { "this is a random fact" })
         let store = TestStore(initialState: DemoFeature.State()) {
             DemoFeature(factLoader: factLoader, autoload: false)
         }
         
-        store.send(.loadFactButtonTapped)
+        store.send(.loadFactButtonTapped) {
+            $0.fact = "this is a random fact"
+        }
     }
 }
