@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "1B974901-6B4B-4D82-AEEC-24DF84830049",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "performanceAntipatternCheckerEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "LoadableTCA2Tests",
+        "name" : "LoadableTCA2Tests"
+      }
+    }
+  ],
+  "version" : 1
+}
