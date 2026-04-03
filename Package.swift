@@ -35,7 +35,8 @@ let package = Package(
         // .package(url: "https://github.com/pointfreeco/swift-identified-collections", .upToNextMajor(from: "1.0.0")),
         // .package(url: "https://github.com/pointfreeco/swift-custom-dump", .upToNextMajor(from: "1.3.3")),
         // .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", .upToNextMajor(from: "1.4.1")),
-        .package(url: "https://github.com/pointfreeco/TCA26", branch: "main")
+        .package(url: "https://github.com/pointfreeco/TCA26", branch: "main"),
+        .package(url: "https://github.com/pointfreeco/swift-dependencies", .upToNextMajor(from: "1.12.0"))
     ],
     targets: [
         // Disabled while TCA1 dependency is removed for TCA2 exploration
@@ -74,6 +75,7 @@ let package = Package(
             dependencies: [
                 "LoadableTCA2",
                 .product(name: "ComposableArchitecture2", package: "TCA26"),
+                .product(name: "DependenciesTestSupport", package: "swift-dependencies")
             ]
         ),
     ]
