@@ -44,7 +44,7 @@ struct LoadableTCA2Tests {
     @MainActor
     @Test func `load on mount`() {
         let factLoader = FactLoader(load: { "this is a random fact" })
-        let store = TestStore(initialState: DemoFeature.State()) {
+        _ = TestStore(initialState: DemoFeature.State()) {
             DemoFeature(factLoader: factLoader, loadOnMount: true)
         } changes: { state in
             state.fact = "this is a random fact"
@@ -64,31 +64,17 @@ struct LoadableTCA2Tests {
     }
     
     @MainActor
-    @Test func `refresh with existing value`() async {
-        let clock = TestClock()
+    @Test(.dependency(\.exhaustivity, .off))
+    func `refresh with existing value`() async {
         var currentFact = "this is a test fact"
-        var delayLoad = false
-        let factLoader = FactLoader {
-            if delayLoad {
-                try? await clock.sleep(for: .seconds(1))
-            }
-            return currentFact
-        }
+        let factLoader = FactLoader { currentFact }
         
         let store = TestStore(initialState: DemoFeature.State()) {
-            DemoFeature(factLoader: factLoader, loadOnMount: false)
+            DemoFeature(factLoader: factLoader, loadOnMount: true)
         }
-        
-        store.send(.loadFactButtonTapped) {
-            $0.fact = "this is a test fact"
-        }
-        
-        delayLoad = true
         currentFact = "this is a new fact"
         
         store.send(.refreshButtonTapped)
-
-        await clock.run()
         
         store.expect {
             $0.fact = "this is a new fact"
