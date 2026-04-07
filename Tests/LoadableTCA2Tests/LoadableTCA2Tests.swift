@@ -27,7 +27,6 @@ struct LoadableTCA2Tests {
         
         var body: some Feature {
             Load(\.$fact, loadOnMount: loadOnMount) { _ in
-                
                 await factLoader.load()
             }
             Update { state, action in
