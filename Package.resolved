@@ -1,5 +1,5 @@
 {
-  "originHash" : "ddf1c79ae8294c05ccc608575e85ddc5ed5406f2bc1e9abdd16c5bd0865bca96",
+  "originHash" : "afe6935784186da8b07bab3bbd9281cd3dc834a678a24fad0d4c3e88d89ae703",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -133,7 +133,7 @@
       "location" : "https://github.com/pointfreeco/TCA26",
       "state" : {
         "branch" : "main",
-        "revision" : "877ccdda87fe50df70fadb1b03a3f2c3eebafc7e"
+        "revision" : "d1e529748e30abf9b1108d7e1a5c9106f778e8ca"
       }
     },
     {

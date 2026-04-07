@@ -41,15 +41,15 @@ struct LoadableTCA2Tests {
         }
     }
     
-//    @MainActor
-//    @Test func `load on mount`() {
-//        let factLoader = FactLoader(load: { "this is a random fact" })
-//        let store = TestStore(initialState: DemoFeature.State()) {
-//            DemoFeature(factLoader: factLoader, loadOnMount: true)
-//        } changes: { state in
-//            state.fact = "this is a random fact"
-//        }
-//    }
+    @MainActor
+    @Test func `load on mount`() {
+        let factLoader = FactLoader(load: { "this is a random fact" })
+        let store = TestStore(initialState: DemoFeature.State()) {
+            DemoFeature(factLoader: factLoader, loadOnMount: true)
+        } changes: { state in
+            state.fact = "this is a random fact"
+        }
+    }
     
     @MainActor
     @Test func `load on action`() {
